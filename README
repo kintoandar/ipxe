@@ -1,8 +1,8 @@
-iPXE README File
+# Get Certs
+cd /tmp
+echo | openssl s_client -showcerts -connect raw.githubusercontent.com:443 2> /dev/null | awk -v c=-1 '/-----BEGIN CERTIFICATE-----/{inc=1;c++} inc {print > ("level" c ".crt")} /---END CERTIFICATE-----/{inc=0}'
+wget https://www.digicert.com/CACerts/DigiCertHighAssuranceEVRootCA.crt
+openssl x509 -in DigiCertHighAssuranceEVRootCA.crt -inform DER -out level2.crt -outform PEM
 
-Quick start guide:
-
-   cd src
-   make
-
-For any more detailed instructions, see http://ipxe.org
+# Compile
+make TRUST="/tmp/level2.crt,/tmp/level1.crt,/tmp/level0.crt" EMBED=../config.ipxe DEBUG=x509,httpcore,https,rootcert

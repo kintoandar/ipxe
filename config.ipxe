@@ -1,0 +1,10 @@
+#!ipxe
+echo ==> Running DHCP
+dhcp net0
+echo ==> Syncing NTP
+ntp pool.ntp.org
+echo ==> Booting URL
+set filename https://raw.githubusercontent.com/kintoandar/rtfm/master/pxe/k
+chain ${filename} ||
+echo ==> Failed, dropping to shell (use 'chain' to load URL)
+shell
